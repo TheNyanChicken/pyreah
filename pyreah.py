@@ -79,7 +79,7 @@ def about_me_window():
 
 # this checks if there is a user_data save file already exists, and if it does not it creates one
 def start_up():
-    if os.path.isfile('./user_data') == False:
+    if os.path.isfile('./data/user_data') == False:
         root.title("Pyreah - Setup")
         setup_frame = tk.Frame(root)
         setup_frame.pack()
