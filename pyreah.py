@@ -68,7 +68,7 @@ def new_task_window():
 
 def about_me_window():
     about_frame = tk.Frame(root)
-    tk.Label(about_frame, text="Hi, I'm Pyreah, a simple digital assistant made by Froginator. I can handle simple tasks such as reminding you of important events and scheduling. With the addition of any other optional modules that can be gotten at <insert hyperlink here>, I can do other things as well. I hope to be of good service.", wraplength=wrap_length).pack()
+    tk.Label(about_frame, text="Hi, I'm Pyreah, a simple digital assistant made by TheNyanChicken. I can handle simple tasks such as reminding you of important events and scheduling. With the addition of any other optional modules that can be gotten at <insert hyperlink here>, I can do other things as well. I hope to be of good service.", wraplength=wrap_length).pack()
     back = tk.Button(about_frame, text="Back")
     back.pack()
     def onclick_back(e):
