@@ -14,6 +14,10 @@ root = tk.Tk()
 root.title("Pyreah")
 root.geometry("300x300")
 wrap_length = 300
+options = [
+    "Calender"
+    ]
+
 
 #this creates a new/updates the user_data file
 def save_data():
@@ -41,31 +45,73 @@ def main_window():
         tk.Label(main_frame, text="Good evening,").pack()
     tk.Label(main_frame, text=UserData["name"]).pack()
     tk.Label(main_frame).pack()
-    new_task = tk.Button(main_frame, text="New Task")
+    new_task_selection = tk.StringVar()
+    new_task_selection.set("New Task")
+    new_task = tk.OptionMenu(main_frame, new_task_selection, *options)
     new_task.pack()
+    def onclick_newtask(*args):
+        if new_task_selection.get() == "Calender":
+            main_frame.destroy()
+            calender_window()
+        else:
+            print("Do nothing")
+    new_task_selection.trace("w", onclick_newtask)
     about = tk.Button(main_frame, text="About Me")
     about.pack()
-    def onclick_new_task(e):
-        main_frame.destroy()
-        new_task_window()
-    new_task.bind("<Button-1>", onclick_new_task)
     def onclick_about(e):
         main_frame.destroy()
         about_me_window()
     about.bind("<Button-1>", onclick_about)
     main_frame.pack()
 
-def new_task_window():
-    new_task_frame = tk.Frame(root)
-    tk.Label(new_task_frame, text="I can do these things for you:").pack()
-    back = tk.Button(new_task_frame, text="Back")
+#window for seeing calender stuff
+def calender_window():
+    calender_frame = tk.Frame(root)
+    tk.Label(calender_frame, text="You can schedule new events here and assign them to a date, I'll remind you of any upcoming events. You can also check for all scheduled events.", wraplength=wrap_length).pack()
+    add_new_event = tk.Button(calender_frame, text="Add New Event")
+    add_new_event.pack()
+    def onclick_new_event(e):
+        calender_frame.destroy()
+        calender_add_new_event_window()
+    add_new_event.bind("<Button-1>", onclick_new_event)
+    view_events = tk.Button(calender_frame, text="View All Events")
+    view_events.pack()
+    def onclick_view_events(e):
+        calender_frame.destroy()
+        calender_view_events_window()
+    view_events.bind("<Button-1>", onclick_view_events)
+    back = tk.Button(calender_frame, text="Back")
     back.pack()
     def onclick_back(e):
-        new_task_frame.destroy()
+        calender_frame.destroy()
         main_window()
     back.bind("<Button-1>", onclick_back)
-    new_task_frame.pack()
+    calender_frame.pack()
 
+#window for adding a new event to the calender
+def calender_add_new_event_window():
+    calender_add_new_event_frame = tk.Frame(root)
+    tk.Label(calender_add_new_event_frame, text="Adding new event").pack()
+    back = tk.Button(calender_add_new_event_frame, text="Back")
+    back.pack()
+    def onclick_back(e):
+        calender_add_new_event_frame.destroy()
+        calender_window()
+    back.bind("<Button-1>", onclick_back)
+    calender_add_new_event_frame.pack()
+
+def calender_view_events_window():
+    calender_view_events_frame = tk.Frame(root)
+    tk.Label(calender_view_events_frame, text="Viewing all events").pack()
+    back = tk.Button(calender_view_events_frame, text="Back")
+    back.pack()
+    def onclick_back(e):
+        calender_view_events_frame.destroy()
+        calender_window()
+    back.bind("<Button-1>", onclick_back)
+    calender_view_events_frame.pack()
+
+#about screen to display misc info
 def about_me_window():
     about_frame = tk.Frame(root)
     tk.Label(about_frame, text="Hi, I'm Pyreah, a simple digital assistant made by TheNyanChicken. I can handle simple tasks such as reminding you of important events and scheduling. With the addition of any other optional modules that can be gotten at <insert hyperlink here>, I can do other things as well. I hope to be of good service.", wraplength=wrap_length).pack()
