@@ -9,6 +9,8 @@ UserData = {
     "name":""
     }
 
+UserEvents = []
+
 #variables for the main window
 root = tk.Tk()
 root.title("Pyreah")
@@ -19,18 +21,27 @@ options = [
     ]
 
 
-#this creates a new/updates the user_data file
+#this creates a new/updates save files
 def save_data():
     user_data_file = open('./data/user_data', 'wb')
     pickle.dump(UserData,user_data_file)
     user_data_file.close()
+    
+    user_events_file = open('./data/user_events', 'wb')
+    pickle.dump(UserEvents,user_events_file)
+    user_events_file.close()
 
 #this loads existing data
 def load_data():
     global UserData
+    global UserEvents
     user_data_file = open('./data/user_data', 'rb')
     UserData = pickle.load(user_data_file)
     user_data_file.close()
+    
+    user_events_file = open('./data/user_events', 'rb')
+    UserEvents = pickle.load(user_events_file)
+    user_events_file.close()
 
 #main menu
 def main_window():
@@ -91,7 +102,26 @@ def calender_window():
 #window for adding a new event to the calender
 def calender_add_new_event_window():
     calender_add_new_event_frame = tk.Frame(root)
-    tk.Label(calender_add_new_event_frame, text="Adding new event").pack()
+    root.title("Pyreah - Adding New Event")
+    tk.Label(calender_add_new_event_frame, text="Title of Event").pack()
+    event_title_input = tk.Entry(calender_add_new_event_frame)
+    event_title_input.pack()
+    tk.Label(calender_add_new_event_frame, text="Date of Event (Day, Month)").pack()
+    event_day_input = tk.Entry(calender_add_new_event_frame, textvariable=tk.IntVar(), text="DD", width="2")
+    event_day_input.pack(side=tk.LEFT, padx="10")
+    event_month_input = tk.Entry(calender_add_new_event_frame, textvariable=tk.IntVar(),  text="MM", width="2")
+    event_month_input.pack(side=tk.LEFT, padx="10")
+    event_confirm = tk.Button(calender_add_new_event_frame, text="Confirm")
+    event_confirm.pack()
+    def onclick_confirm(e):
+        event_day = int(event_day_input.get())
+        event_month = int(event_month_input.get())
+        if event_day >= 1 and event_day <= 31 and event_month >= 1 and event_month <= 12:
+            event_info = {'Event Title':event_title_input.get(), 'Event Day':event_day, 'Event Month':event_month}
+            UserEvents.append(event_info)
+            for event in UserEvents:
+                print(event)
+    event_confirm.bind("<Button-1>", onclick_confirm)
     back = tk.Button(calender_add_new_event_frame, text="Back")
     back.pack()
     def onclick_back(e):
@@ -100,11 +130,12 @@ def calender_add_new_event_window():
     back.bind("<Button-1>", onclick_back)
     calender_add_new_event_frame.pack()
 
+#window for seeing all current events
 def calender_view_events_window():
     calender_view_events_frame = tk.Frame(root)
     tk.Label(calender_view_events_frame, text="Viewing all events").pack()
     back = tk.Button(calender_view_events_frame, text="Back")
-    back.pack()
+    back.pack(side=tk.BOTTOM)
     def onclick_back(e):
         calender_view_events_frame.destroy()
         calender_window()
@@ -116,7 +147,7 @@ def about_me_window():
     about_frame = tk.Frame(root)
     tk.Label(about_frame, text="Hi, I'm Pyreah, a simple digital assistant made by TheNyanChicken. I can handle simple tasks such as reminding you of important events and scheduling. With the addition of any other optional modules that can be gotten at <insert hyperlink here>, I can do other things as well. I hope to be of good service.", wraplength=wrap_length).pack()
     back = tk.Button(about_frame, text="Back")
-    back.pack()
+    back.pack(side=tk.BOTTOM)
     def onclick_back(e):
         about_frame.destroy()
         main_window()
@@ -144,3 +175,4 @@ def start_up():
 
 start_up()
 root.mainloop()
+save_data()
