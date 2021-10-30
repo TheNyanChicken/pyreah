@@ -17,14 +17,14 @@ wrap_length = 300
 
 #this creates a new/updates the user_data file
 def save_data():
-    user_data_file = open('user_data', 'wb')
+    user_data_file = open('./data/user_data', 'wb')
     pickle.dump(UserData,user_data_file)
     user_data_file.close()
 
 #this loads existing data
 def load_data():
     global UserData
-    user_data_file = open('user_data', 'rb')
+    user_data_file = open('./data/user_data', 'rb')
     UserData = pickle.load(user_data_file)
     user_data_file.close()
 
